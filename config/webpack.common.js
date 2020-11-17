@@ -1,17 +1,20 @@
-const paths = require("./paths");
+const paths = require('./paths');
 
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   // Where webpack looks to start building the bundle
-  entry: [paths.src + "/index.js"],
+  entry: {
+    index: [paths.src + '/index/index.js'],
+    test: [paths.src + '/test/test.js'],
+  },
 
   // Where webpack outputs the assets and bundles
   output: {
     path: paths.build,
-    filename: "[name].js",
-    publicPath: "/",
+    filename: '[name].js',
+    publicPath: '/',
   },
 
   // Customize the webpack build process
@@ -22,8 +25,16 @@ module.exports = {
     // Generates an HTML file from a template
     // Generates deprecation warning: https://github.com/jantimon/html-webpack-plugin/issues/1501
     new HtmlWebpackPlugin({
-      template: paths.src + "/index.html", // template file
-      filename: "index.html", // output file
+      // inject: false,
+      chunks: ['index'],
+      template: paths.src + '/index/index.html', // template file
+      filename: 'index.html', // output file
+    }),
+    new HtmlWebpackPlugin({
+      // inject: false,
+      chunks: ['test'],
+      template: paths.src + '/test/test.html', // template file
+      filename: 'test.html', // output file
     }),
   ],
 
@@ -31,26 +42,26 @@ module.exports = {
   module: {
     rules: [
       // JavaScript: Use Babel to transpile JavaScript files
-      { test: /\.js$/, exclude: /node_modules/, use: ["babel-loader"] },
+      { test: /\.js$/, exclude: /node_modules/, use: ['babel-loader'] },
 
       // Styles: Inject CSS into the head with source maps
       {
         test: /\.(scss|css)$/,
         use: [
-          "style-loader",
+          'style-loader',
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: { sourceMap: true, importLoaders: 1 },
           },
-          { loader: "postcss-loader", options: { sourceMap: true } },
-          { loader: "sass-loader", options: { sourceMap: true } },
+          { loader: 'postcss-loader', options: { sourceMap: true } },
+          { loader: 'sass-loader', options: { sourceMap: true } },
         ],
       },
 
       //Templates:
       {
         test: /\.hbs$/,
-        use: "handlebars-loader",
+        use: 'handlebars-loader',
       },
 
       // Images: Copy image files to build folder
@@ -59,22 +70,22 @@ module.exports = {
         test: /\.(ico|gif|webp|png|jpe?g|svg)$/i,
         use: [
           {
-            loader: "url-loader",
+            loader: 'url-loader',
             options: {
-              name: "[path][name].[ext]",
+              name: '[path][name].[ext]',
               limit: 8192,
               esModule: false,
             },
           },
-          "img-loader",
+          'img-loader',
         ],
         // type: "asset/resource",
       },
       // Fonts and SVGs: Inline files
-      { test: /\.(woff(2)?|eot|ttf|otf|svg|)$/, type: "asset/inline" },
+      { test: /\.(woff(2)?|eot|ttf|otf|svg|)$/, type: 'asset/inline' },
       {
         test: /\.html$/,
-        use: "html-loader",
+        use: 'html-loader',
       },
     ],
   },
