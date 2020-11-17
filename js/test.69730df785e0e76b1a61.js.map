@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://goit-js-hw-12-countries/./src/test/test.js"],"names":["console","log"],"mappings":"6GAAAA,QAAQC,IAAI,U","file":"js/test.69730df785e0e76b1a61.js","sourcesContent":["console.log('test');\r\n"],"sourceRoot":""}
